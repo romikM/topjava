@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.repository.MealRepository;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import static ru.javawebinar.topjava.util.ValidationUtil.checkNotFoundWithId;
@@ -21,6 +22,10 @@ public class MealService {
         return repository.save(meal, userId);
     }
 
+    public void update(Meal meal, int userId) {
+        checkNotFoundWithId(repository.save(meal, userId), meal.getId());
+    }
+
     public void delete(int id, int userId) {
         checkNotFoundWithId(repository.delete(id, userId), id);
     }
@@ -33,7 +38,8 @@ public class MealService {
         return repository.getAll(userId);
     }
 
-    public void update(Meal meal, int userId) {
-        checkNotFoundWithId(repository.save(meal, userId), meal.getId());
+    public List<Meal> getBetweenHalfOpen(LocalDate dateFrom, LocalDate dateTo, int userId) {
+        return repository.getBetweenHalfOpen(dateFrom, dateTo, userId);
     }
+
 }

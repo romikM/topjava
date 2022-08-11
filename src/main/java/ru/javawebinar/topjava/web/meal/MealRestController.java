@@ -62,10 +62,12 @@ public class MealRestController {
         return MealsUtil.getTos(service.getAll(userId), SecurityUtil.authUserCaloriesPerDay());
     }
 
-    public List<MealTo> getFilteredbyDateOrTime(LocalDate dateFrom, LocalTime timeFrom, LocalDate dateTo, LocalTime timeTo) {
+    public List<MealTo> getFilteredbyDateTime(LocalDate dateFrom, LocalTime timeFrom, LocalDate dateTo, LocalTime timeTo) {
         int userId = SecurityUtil.authUserId();
+        log.info("getBetween from date {} to date {} and from time{} to time {}, collected for user {}", dateFrom, dateTo, timeFrom, timeTo, userId);
 
-        return Collections.emptyList();
+        List<Meal> mealsFilteredByDate = service.getBetweenHalfOpen(dateFrom, dateTo, userId);
+        return MealsUtil.getFilteredTos(mealsFilteredByDate, SecurityUtil.authUserCaloriesPerDay(), timeFrom, timeTo);
     }
 
 }

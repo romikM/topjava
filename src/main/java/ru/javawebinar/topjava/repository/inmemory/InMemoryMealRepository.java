@@ -4,8 +4,10 @@ import org.springframework.stereotype.Repository;
 import org.springframework.util.CollectionUtils;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.repository.MealRepository;
+import ru.javawebinar.topjava.util.DateTimeUtil;
 import ru.javawebinar.topjava.util.MealsUtil;
 
+import java.time.LocalDate;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -54,11 +56,13 @@ public class InMemoryMealRepository implements MealRepository {
                         .collect(Collectors.toList());
     }
 
-    public List<Meal> getFiltered(int userId) {
+    public List<Meal> getBetweenHalfOpen(LocalDate dateFrom, LocalDate dateTo, int userId) {
         Map<Integer, Meal> userMeals = repository.get(userId);
-        return Collections.emptyList();
+        return userMeals.values()
+                .stream()
+                .filter(meal -> DateTimeUtil.isBetweenHalfOpen(meal.getDate(), dateFrom, dateTo))
+                .sorted(Comparator.comparing(Meal::getDate).reversed())
+                .collect(Collectors.toList());
     }
-
-
 }
 
