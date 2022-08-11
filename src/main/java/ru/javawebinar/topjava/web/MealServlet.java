@@ -28,12 +28,11 @@ public class MealServlet extends HttpServlet {
 
     private ConfigurableApplicationContext springContext;
     private MealRestController mealController;
-    private MealRepository repository;
+
 
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
-        repository = new InMemoryMealRepository();
         springContext = new ClassPathXmlApplicationContext("spring/spring-app.xml");
         mealController = springContext.getBean(MealRestController.class);
     }
@@ -55,7 +54,13 @@ public class MealServlet extends HttpServlet {
                 Integer.parseInt(request.getParameter("calories")));
 
         log.info(meal.isNew() ? "Create {}" : "Update {}", meal);
-        repository.save(meal, SecurityUtil.authUserId());
+
+        if (meal.isNew()) {
+            mealController.create(meal);
+        } else {
+            mealController.update(meal, meal.getId());
+        }
+
         response.sendRedirect("meals");
     }
 
@@ -67,30 +72,29 @@ public class MealServlet extends HttpServlet {
             case "delete":
                 int id = getId(request);
                 log.info("Delete id={}", id);
-                repository.delete(id, SecurityUtil.authUserId());
+                mealController.delete(id);
                 response.sendRedirect("meals");
                 break;
             case "create":
             case "update":
                 final Meal meal = "create".equals(action) ?
                         new Meal(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES), "", 1000) :
-                        repository.get(getId(request), SecurityUtil.authUserId());
+                        mealController.get(getId(request));
                 request.setAttribute("meal", meal);
                 request.getRequestDispatcher("/mealForm.jsp").forward(request, response);
                 break;
-            case "dtf":
+            case "datetimefilter":
                 LocalDate parsedDateFrom = DateTimeUtil.parseDate(request.getParameter("dateFrom"));
                 LocalTime parsedTimeFrom = DateTimeUtil.parseTime(request.getParameter("timeFrom"));
                 LocalDate parsedDateTo = DateTimeUtil.parseDate(request.getParameter("dateTo"));
                 LocalTime parsedTimeTo = DateTimeUtil.parseTime(request.getParameter("timeTo"));
-                request.setAttribute("meals", mealController.dtFiltered(parsedDateFrom, parsedTimeFrom, parsedDateTo, parsedTimeTo));
+                request.setAttribute("meals", mealController.getFilteredbyDateOrTime(parsedDateFrom, parsedTimeFrom, parsedDateTo, parsedTimeTo));
                 request.getRequestDispatcher("/meals.jsp").forward(request, response);
                 break;
             case "all":
             default:
                 log.info("getAll");
-                request.setAttribute("meals",
-                        MealsUtil.getTos(repository.getAll(SecurityUtil.authUserId()), MealsUtil.DEFAULT_CALORIES_PER_DAY));
+                request.setAttribute("meals", mealController.getAll());
                 request.getRequestDispatcher("/meals.jsp").forward(request, response);
                 break;
         }

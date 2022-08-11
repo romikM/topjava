@@ -6,15 +6,7 @@
 <html>
 <head>
     <title>Meal list</title>
-    <style>
-        .normal {
-            color: green;
-        }
-
-        .excess {
-            color: red;
-        }
-    </style>
+    <link rel="stylesheet" href="./css/style.css">
 </head>
 <body>
 <section>
@@ -25,7 +17,7 @@
     <hr>
     <h4>Date-time filter</h4>
     <form action="meals" method="get">
-        <input type="hidden" name="action" value="dtf" />
+        <input type="hidden" name="action" value="datetimefilter"/>
         <fieldset>
             <label>date from:</label>
             <input type="date" name="dateFrom" value="${param.dateFrom}">
@@ -38,7 +30,9 @@
             <label>time to:</label>
             <input type="time" name="timeTo" value="${param.timeTo}">
         </fieldset>
-        <fieldset><button type="submit">go filter</button></fieldset>
+        <fieldset>
+            <button type="submit">go filter</button>
+        </fieldset>
     </form>
     <hr>
     <table border="1" cellpadding="8" cellspacing="0">
@@ -52,7 +46,7 @@
         </tr>
         </thead>
         <c:forEach items="${requestScope.meals}" var="meal">
-            <jsp:useBean id="meal" type="ru.javawebinar.topjava.model.to.MealTo"/>
+            <jsp:useBean id="meal" type="ru.javawebinar.topjava.to.MealTo"/>
             <tr class="${meal.excess ? 'excess' : 'normal'}">
                 <td>
                         <%--${meal.dateTime.toLocalDate()} ${meal.dateTime.toLocalTime()}--%>

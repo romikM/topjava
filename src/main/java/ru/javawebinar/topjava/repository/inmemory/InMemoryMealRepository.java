@@ -5,7 +5,6 @@ import org.springframework.util.CollectionUtils;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.repository.MealRepository;
 import ru.javawebinar.topjava.util.MealsUtil;
-import ru.javawebinar.topjava.web.SecurityUtil;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -19,13 +18,13 @@ public class InMemoryMealRepository implements MealRepository {
     private final AtomicInteger counter = new AtomicInteger(0);
 
     {
-        MealsUtil.meals.forEach(m -> save(m, SecurityUtil.authUserId()));
-        MealsUtil.mealsAdm.forEach(m -> save(m, 2));
+        MealsUtil.meals.forEach(m -> save(m, 1));
+        MealsUtil.adminMeals.forEach(m -> save(m, 2));
     }
 
     @Override
     public Meal save(Meal meal, int userId) {
-        Map<Integer, Meal> userMeals = repository.computeIfAbsent(userId, ConcurrentHashMap::new);
+        Map<Integer, Meal> userMeals = repository.getOrDefault(userId, new HashMap<>());
         if (meal.isNew()) {
             meal.setId(counter.incrementAndGet());
             userMeals.put(meal.getId(), meal);
@@ -54,6 +53,12 @@ public class InMemoryMealRepository implements MealRepository {
                         .sorted(Comparator.comparing(Meal::getDateTime).reversed())
                         .collect(Collectors.toList());
     }
+
+    public List<Meal> getFiltered(int userId) {
+        Map<Integer, Meal> userMeals = repository.get(userId);
+        return Collections.emptyList();
+    }
+
 
 }
 
