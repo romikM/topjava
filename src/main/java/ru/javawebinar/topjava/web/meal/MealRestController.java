@@ -12,7 +12,6 @@ import ru.javawebinar.topjava.web.SecurityUtil;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.Collections;
 import java.util.List;
 
 import static ru.javawebinar.topjava.util.ValidationUtil.assureIdConsistent;
@@ -62,7 +61,7 @@ public class MealRestController {
         return MealsUtil.getTos(service.getAll(userId), SecurityUtil.authUserCaloriesPerDay());
     }
 
-    public List<MealTo> getFilteredbyDateTime(LocalDate dateFrom, LocalTime timeFrom, LocalDate dateTo, LocalTime timeTo) {
+    public List<MealTo> getFilteredByDateTime(LocalDate dateFrom, LocalTime timeFrom, LocalDate dateTo, LocalTime timeTo) {
         int userId = SecurityUtil.authUserId();
         log.info("getBetween from date {} to date {} and from time{} to time {}, collected for user {}", dateFrom, dateTo, timeFrom, timeTo, userId);
 

@@ -9,11 +9,11 @@ public interface MealRepository {
 
     Meal save(Meal meal, int userId);
 
-    boolean delete(int id, int UserId);
+    boolean delete(int id, int userId);
 
-    Meal get(int id, int UserId);
+    Meal get(int id, int userId);
 
-    List<Meal> getAll(int UserId);
+    List<Meal> getAll(int userId);
 
     List<Meal> getBetweenHalfOpen(LocalDate dateFrom, LocalDate dateTo, int userId);
 }

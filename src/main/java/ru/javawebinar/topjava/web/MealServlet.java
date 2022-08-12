@@ -5,10 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import ru.javawebinar.topjava.model.Meal;
-import ru.javawebinar.topjava.repository.MealRepository;
-import ru.javawebinar.topjava.repository.inmemory.InMemoryMealRepository;
 import ru.javawebinar.topjava.util.DateTimeUtil;
-import ru.javawebinar.topjava.util.MealsUtil;
 import ru.javawebinar.topjava.web.meal.MealRestController;
 
 import javax.servlet.ServletConfig;
@@ -25,10 +22,8 @@ import java.util.Objects;
 
 public class MealServlet extends HttpServlet {
     private static final Logger log = LoggerFactory.getLogger(MealServlet.class);
-
     private ConfigurableApplicationContext springContext;
     private MealRestController mealController;
-
 
     @Override
     public void init(ServletConfig config) throws ServletException {
@@ -47,7 +42,6 @@ public class MealServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
         String id = request.getParameter("id");
-
         Meal meal = new Meal(id.isEmpty() ? null : Integer.valueOf(id),
                 LocalDateTime.parse(request.getParameter("dateTime")),
                 request.getParameter("description"),
@@ -60,7 +54,6 @@ public class MealServlet extends HttpServlet {
         } else {
             mealController.update(meal, meal.getId());
         }
-
         response.sendRedirect("meals");
     }
 
@@ -88,7 +81,7 @@ public class MealServlet extends HttpServlet {
                 LocalTime parsedTimeFrom = DateTimeUtil.parseTime(request.getParameter("timeFrom"));
                 LocalDate parsedDateTo = DateTimeUtil.parseDate(request.getParameter("dateTo"));
                 LocalTime parsedTimeTo = DateTimeUtil.parseTime(request.getParameter("timeTo"));
-                request.setAttribute("meals", mealController.getFilteredbyDateTime(parsedDateFrom, parsedTimeFrom, parsedDateTo, parsedTimeTo));
+                request.setAttribute("meals", mealController.getFilteredByDateTime(parsedDateFrom, parsedTimeFrom, parsedDateTo, parsedTimeTo));
                 request.getRequestDispatcher("/meals.jsp").forward(request, response);
                 break;
             case "all":
