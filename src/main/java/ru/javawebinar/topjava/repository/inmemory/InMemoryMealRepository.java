@@ -1,12 +1,14 @@
 package ru.javawebinar.topjava.repository.inmemory;
 
 import org.springframework.stereotype.Repository;
+import org.springframework.util.CollectionUtils;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.repository.MealRepository;
 import ru.javawebinar.topjava.util.DateTimeUtil;
 import ru.javawebinar.topjava.util.MealsUtil;
 
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -60,13 +62,14 @@ public class InMemoryMealRepository implements MealRepository {
 
     private List<Meal> getFiltered(int userId, Predicate<Meal> filter) {
         Map<Integer, Meal> userMeals = repository.get(userId);
-        return userMeals.values()
-                .stream()
-                .filter(filter)
-                .sorted(Comparator
-                        .comparing(Meal::getDate).reversed()
-                        .thenComparing(Meal::getTime).reversed())
-                .collect(Collectors.toList());
+        return CollectionUtils.isEmpty(userMeals) ? Collections.emptyList() :
+                userMeals.values()
+                        .stream()
+                        .filter(filter)
+                        .sorted(Comparator
+                                .comparing(Meal::getDate).reversed()
+                                .thenComparing(Meal::getTime).reversed())
+                        .collect(Collectors.toList());
     }
 }
 
