@@ -7,7 +7,7 @@ import ru.javawebinar.topjava.repository.MealRepository;
 import ru.javawebinar.topjava.util.DateTimeUtil;
 import ru.javawebinar.topjava.util.MealsUtil;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -30,7 +30,7 @@ public class InMemoryMealRepository implements MealRepository {
 
     @Override
     public Meal save(Meal meal, int userId) {
-        Map<Integer, Meal> userMeals = repository.computeIfAbsent(userId, ConcurrentHashMap::new);
+        Map<Integer, Meal> userMeals = repository.computeIfAbsent(userId, m -> new ConcurrentHashMap<>());
         if (meal.isNew()) {
             meal.setId(counter.incrementAndGet());
             userMeals.put(meal.getId(), meal);
@@ -56,8 +56,9 @@ public class InMemoryMealRepository implements MealRepository {
         return getFiltered(userId, meal -> true);
     }
 
-    public List<Meal> getBetweenHalfOpen(LocalDate dateFrom, LocalDate dateTo, int userId) {
-        return getFiltered(userId, meal -> DateTimeUtil.isBetweenHalfOpen(meal.getDate(), dateFrom, dateTo));
+    @Override
+    public List<Meal> getBetweenHalfOpen(LocalDateTime dateFrom, LocalDateTime dateTo, int userId) {
+        return getFiltered(userId, meal -> DateTimeUtil.isBetweenHalfOpen(meal.getDateTime(), dateFrom, dateTo));
     }
 
     private List<Meal> getFiltered(int userId, Predicate<Meal> filter) {
@@ -67,7 +68,7 @@ public class InMemoryMealRepository implements MealRepository {
                         .stream()
                         .filter(filter)
                         .sorted(Comparator
-                                .comparing(Meal::getDate).reversed()
+                                .comparing(Meal::getDate)
                                 .thenComparing(Meal::getTime).reversed())
                         .collect(Collectors.toList());
     }

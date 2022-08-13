@@ -26,5 +26,13 @@ public class DateTimeUtil {
         return StringUtils.hasLength(str) ? LocalTime.parse(str) : null;
     }
 
+    public static LocalDateTime getDateFromFixedLimit(LocalDate dateFrom) {
+        return dateFrom != null ? dateFrom.atStartOfDay() : LocalDateTime.MAX;
+    }
+
+    public static LocalDateTime getDateToNotFixedLimit(LocalDate dateTo) {
+        return dateTo != null ? dateTo.plusDays(1).atStartOfDay() : LocalDateTime.MIN;
+    }
+
 }
 

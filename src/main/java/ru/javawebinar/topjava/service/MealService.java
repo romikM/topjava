@@ -7,6 +7,7 @@ import ru.javawebinar.topjava.repository.MealRepository;
 import java.time.LocalDate;
 import java.util.List;
 
+import static ru.javawebinar.topjava.util.DateTimeUtil.*;
 import static ru.javawebinar.topjava.util.ValidationUtil.checkNotFoundWithId;
 
 @Service
@@ -39,7 +40,7 @@ public class MealService {
     }
 
     public List<Meal> getBetweenHalfOpen(LocalDate dateFrom, LocalDate dateTo, int userId) {
-        return repository.getBetweenHalfOpen(dateFrom, dateTo, userId);
+        return repository.getBetweenHalfOpen(getDateFromFixedLimit(dateFrom), getDateToNotFixedLimit(dateTo), userId);
     }
 
 }
