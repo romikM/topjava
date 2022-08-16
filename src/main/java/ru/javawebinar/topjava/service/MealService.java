@@ -40,7 +40,7 @@ public class MealService {
     }
 
     public List<Meal> getBetweenHalfOpen(LocalDate dateFrom, LocalDate dateTo, int userId) {
-        return repository.getBetweenHalfOpen(getDateFromFixedLimit(dateFrom), getDateToNotFixedLimit(dateTo), userId);
+        return repository.getBetweenHalfOpen(parseStartBound(dateFrom), parseEndBound(dateTo), userId);
     }
 
 }

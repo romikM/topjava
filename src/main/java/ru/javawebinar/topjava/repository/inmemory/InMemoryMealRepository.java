@@ -30,7 +30,7 @@ public class InMemoryMealRepository implements MealRepository {
 
     @Override
     public Meal save(Meal meal, int userId) {
-        Map<Integer, Meal> userMeals = repository.computeIfAbsent(userId, m -> new ConcurrentHashMap<>());
+        Map<Integer, Meal> userMeals = repository.computeIfAbsent(userId, uid -> new ConcurrentHashMap<>());
         if (meal.isNew()) {
             meal.setId(counter.incrementAndGet());
             userMeals.put(meal.getId(), meal);
