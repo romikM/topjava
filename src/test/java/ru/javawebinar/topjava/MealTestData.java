@@ -11,8 +11,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static ru.javawebinar.topjava.model.AbstractBaseEntity.START_SEQ;
 
 public class MealTestData {
-    public static final int MEAL_ID = START_SEQ;
-    public static final int ADMIN_MEAL_ID = START_SEQ + 7;
+    public static final int MEAL_ID = 1;
+    public static final int ADMIN_MEAL_ID = MEAL_ID + 7;
 
     public static final Meal MEAL1 = new Meal(MEAL_ID, LocalDateTime.of(2020, Month.AUGUST, 12, 9, 30), "Завтрак", 500);
     public static final Meal MEAL2 = new Meal(MEAL_ID + 1, LocalDateTime.of(2020, Month.AUGUST, 12, 13, 00), "Обед", 1000);
