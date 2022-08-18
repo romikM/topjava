@@ -36,7 +36,7 @@ public class MealServiceTest {
 
     @Test
     public void get() {
-        Meal actual = service.get(mealId, USER_ID);
+        Meal actual = service.get(MEAL_ID , USER_ID);
         assertMatch(actual, meal1);
     }
 
@@ -47,13 +47,13 @@ public class MealServiceTest {
 
     @Test
     public void getNotOwn() {
-        assertThrows(NotFoundException.class, () -> service.get(mealId, ADMIN_ID));
+        assertThrows(NotFoundException.class, () -> service.get(MEAL_ID , ADMIN_ID));
     }
 
     @Test
     public void delete() {
-        service.delete(mealId, USER_ID);
-        assertThrows(NotFoundException.class, () -> service.get(mealId, USER_ID));
+        service.delete(MEAL_ID , USER_ID);
+        assertThrows(NotFoundException.class, () -> service.get(MEAL_ID , USER_ID));
     }
 
     @Test
@@ -63,7 +63,7 @@ public class MealServiceTest {
 
     @Test
     public void deleteNotOwn() {
-        assertThrows(NotFoundException.class, () -> service.delete(mealId, ADMIN_ID));
+        assertThrows(NotFoundException.class, () -> service.delete(MEAL_ID , ADMIN_ID));
     }
 
     @Test
@@ -95,7 +95,7 @@ public class MealServiceTest {
     }
 
     @Test
-    public void createSameDateTime() {
+    public void duplicateDateTimeCreate() {
         assertThrows(DataAccessException.class, () ->
                 service.create(new Meal(null, meal1.getDateTime(), "meal at the same time", 650), USER_ID));
     }
@@ -104,13 +104,13 @@ public class MealServiceTest {
     public void update() {
         Meal updated = getUpdated();
         service.update(updated, USER_ID);
-        assertMatch(service.get(mealId + 2, USER_ID), getUpdated());
+        assertMatch(service.get(MEAL_ID  + 2, USER_ID), getUpdated());
     }
 
     @Test
     public void updateNotOwn() {
         assertThrows(NotFoundException.class, () -> service.update(meal1, ADMIN_ID));
-        assertMatch(service.get(mealId, USER_ID), meal1);
+        assertMatch(service.get(MEAL_ID , USER_ID), meal1);
     }
 }
 
