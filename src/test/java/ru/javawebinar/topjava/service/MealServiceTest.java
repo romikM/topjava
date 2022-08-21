@@ -6,6 +6,7 @@ import org.junit.Test;
 import org.junit.rules.Stopwatch;
 import org.junit.runner.Description;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.test.context.ContextConfiguration;
@@ -18,9 +19,9 @@ import ru.javawebinar.topjava.util.exception.NotFoundException;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Logger;
 
 import static org.junit.Assert.assertThrows;
+import static org.slf4j.LoggerFactory.getLogger;
 import static ru.javawebinar.topjava.MealTestData.*;
 import static ru.javawebinar.topjava.UserTestData.ADMIN_ID;
 import static ru.javawebinar.topjava.UserTestData.USER_ID;
@@ -32,36 +33,31 @@ import static ru.javawebinar.topjava.UserTestData.USER_ID;
 @RunWith(SpringRunner.class)
 @Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
 public class MealServiceTest {
-    private static final Logger logger = Logger.getLogger("");
+    private static final Logger logger = getLogger(MealServiceTest.class);
     private static final StringBuilder totalResult = new StringBuilder();
 
-    private static void logInfo(Description description, String status, long nanos) {
-        String testName = description.getMethodName();
-        String result = String.format("Тест %s %s, затрачено %d милисекунд",
-                testName, status, TimeUnit.NANOSECONDS.toMillis(nanos));
-        totalResult.append(result
-            + "\n"
-            + "-------------------------------------"
-            + "\n");
-        logger.info(result);
-    }
+    @Autowired
+    private MealService service;
 
     @Rule
     public final Stopwatch stopwatch = new Stopwatch() {
         @Override
         public void finished(long nanos, Description description) {
-            logInfo(description, "finished", nanos);
+            String testName = description.getMethodName();
+            String result = String.format("%-25s %7d ms",
+                    testName, TimeUnit.NANOSECONDS.toMillis(nanos));
+            totalResult.append(result
+                    + "\n"
+                    + "-------------------------------------"
+                    + "\n");
+            logger.info(result);
         }
     };
-    // succeeded, failed, skipped - all skipped
 
     @AfterClass
     public static void showTestResults() {
         logger.info(String.valueOf(totalResult));
     }
-
-    @Autowired
-    private MealService service;
 
     @Test
     public void delete() {
