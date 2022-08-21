@@ -36,9 +36,6 @@ public class MealServiceTest {
     private static final Logger logger = getLogger(MealServiceTest.class);
     private static final StringBuilder totalResult = new StringBuilder();
 
-    @Autowired
-    private MealService service;
-
     @Rule
     public final Stopwatch stopwatch = new Stopwatch() {
         @Override
@@ -46,13 +43,14 @@ public class MealServiceTest {
             String testName = description.getMethodName();
             String result = String.format("%-25s %7d ms",
                     testName, TimeUnit.NANOSECONDS.toMillis(nanos));
-            totalResult.append(result
-                    + "\n"
-                    + "-------------------------------------"
-                    + "\n");
+            totalResult.append("\n" + result);
+            totalResult.append("\n" + "-------------------------------------");
             logger.info(result);
         }
     };
+
+    @Autowired
+    private MealService service;
 
     @AfterClass
     public static void showTestResults() {
