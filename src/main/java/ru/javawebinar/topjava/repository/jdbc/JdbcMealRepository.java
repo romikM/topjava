@@ -19,7 +19,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Repository
 public abstract class JdbcMealRepository<T> implements MealRepository {
 
     private static final RowMapper<Meal> ROW_MAPPER = BeanPropertyRowMapper.newInstance(Meal.class);
@@ -44,8 +43,8 @@ public abstract class JdbcMealRepository<T> implements MealRepository {
 
     @Repository
     @Profile(Profiles.HSQL_DB)
-    public static class hsqlJdbcMealRepository extends JdbcMealRepository<Timestamp> {
-        public hsqlJdbcMealRepository(JdbcTemplate jdbcTemplate, NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
+    public static class HsqlJdbcMealRepository extends JdbcMealRepository<Timestamp> {
+        public HsqlJdbcMealRepository(JdbcTemplate jdbcTemplate, NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
             super(jdbcTemplate, namedParameterJdbcTemplate);
         }
 
@@ -57,8 +56,8 @@ public abstract class JdbcMealRepository<T> implements MealRepository {
 
     @Repository
     @Profile(Profiles.POSTGRES_DB)
-    public static class postgresJdbcMealRepository extends JdbcMealRepository<LocalDateTime> {
-        public postgresJdbcMealRepository(JdbcTemplate jdbcTemplate, NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
+    public static class PostgresJdbcMealRepository extends JdbcMealRepository<LocalDateTime> {
+        public PostgresJdbcMealRepository(JdbcTemplate jdbcTemplate, NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
             super(jdbcTemplate, namedParameterJdbcTemplate);
         }
 
