@@ -38,7 +38,7 @@ public abstract class AbstractServiceTest {
     public Stopwatch stopwatch = TimingRules.STOPWATCH;
 
     // https://stackoverflow.com/questions/9267799/how-do-you-get-current-active-default-environment-profile-programmatically-in-sp
-    public boolean isJpaBasedRelease() {
+    protected boolean isJpaBasedRealisation() {
         return env.acceptsProfiles(org.springframework.core.env.Profiles.of(Profiles.DATAJPA, Profiles.JPA));
     }
 
