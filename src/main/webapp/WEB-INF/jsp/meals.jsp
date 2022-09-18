@@ -1,3 +1,4 @@
+<%@ page import="ru.javawebinar.topjava.util.DateTimeUtil" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
@@ -45,7 +46,7 @@
         <c:forEach items="${requestScope.meals}" var="meal">
             <jsp:useBean id="meal" type="ru.javawebinar.topjava.to.MealTo"/>
             <tr data-meal-excess="${meal.excess}">
-                <td>${meal.dateTime}</td>
+                <td><%=DateTimeUtil.toString(meal.getDateTime())%></td>
                 <td>${meal.description}</td>
                 <td>${meal.calories}</td>
                 <td><a href="meals/update?id=${meal.id}"><spring:message code="common.update"/></a></td>
