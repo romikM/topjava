@@ -16,12 +16,16 @@ public class UserTestData {
     public static final int GUEST_ID = START_SEQ + 2;
     public static final int NOT_FOUND = 10;
 
-    public static final User user = new User(USER_ID, "User", "user@yandex.ru", "password", Role.USER, Role.ADMIN);
+    public static final User user = new User(USER_ID, "User", "user@yandex.ru", "password", Role.USER);
     public static final User admin = new User(ADMIN_ID, "Admin", "admin@gmail.com", "admin", Role.ADMIN, Role.USER);
     public static final User guest = new User(GUEST_ID, "Guest", "guest@gmail.com", "guest");
 
     public static User getNew() {
         return new User(null, "New", "new@gmail.com", "newPass", 1555, false, new Date(), Collections.singleton(Role.USER));
+    }
+
+    public static User getNew2roles() {
+        return new User(null, "New2r", "new2r@gmail.com", "newPass", Role.ADMIN, Role.USER);
     }
 
     public static User getUpdated() {
@@ -35,9 +39,8 @@ public class UserTestData {
         return updated;
     }
 
-    public static User getUpdatedAdmin() {
+    public static User getUpdated2roles() {
         User updated = new User(admin);
-        //updated.setName("UpdatedName");
         return updated;
     }
 }

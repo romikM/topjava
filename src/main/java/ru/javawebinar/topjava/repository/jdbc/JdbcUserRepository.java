@@ -14,7 +14,6 @@ import ru.javawebinar.topjava.model.Role;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.repository.UserRepository;
 import ru.javawebinar.topjava.util.ValidationUtil;
-import ru.javawebinar.topjava.util.exception.NotFoundException;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -73,13 +72,13 @@ public class JdbcUserRepository implements UserRepository {
     @Override
     public User get(int id) {
         List<User> users = jdbcTemplate.query("SELECT * FROM users WHERE id=?", ROW_MAPPER, id);
-        return setRoles(DataAccessUtils.singleResult(users));
+        return Objects.isNull(DataAccessUtils.singleResult(users)) ? null : setRoles(DataAccessUtils.singleResult(users));
     }
 
     @Override
     public User getByEmail(String email) {
         List<User> users = jdbcTemplate.query("SELECT * FROM users WHERE email=?", ROW_MAPPER, email);
-        return setRoles(DataAccessUtils.singleResult(users));
+        return Objects.isNull(DataAccessUtils.singleResult(users)) ? null : setRoles(DataAccessUtils.singleResult(users));
     }
 
     private void insertRoles(User user) {
@@ -106,7 +105,6 @@ public class JdbcUserRepository implements UserRepository {
     }
 
     private User setRoles(User user) {
-        ValidationUtil.checkNotFound(user, "user: ");
         List<Role> roles = jdbcTemplate.query(
                 "SELECT role FROM user_roles WHERE user_id=?",
                 (rs, rowNum) -> Role.valueOf(rs.getString("role")), user.getId()

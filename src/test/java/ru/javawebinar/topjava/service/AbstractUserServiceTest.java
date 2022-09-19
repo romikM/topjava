@@ -1,15 +1,10 @@
 package ru.javawebinar.topjava.service;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.CacheManager;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.dao.DataAccessException;
-import ru.javawebinar.topjava.UserTestData;
 import ru.javawebinar.topjava.model.Role;
 import ru.javawebinar.topjava.model.User;
-import ru.javawebinar.topjava.repository.JpaUtil;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
 
 import javax.validation.ConstraintViolationException;
@@ -25,26 +20,21 @@ public abstract class AbstractUserServiceTest extends AbstractServiceTest {
     @Autowired
     protected UserService service;
 
-    @Autowired
-    private CacheManager cacheManager;
-
-    @Autowired
-    @Lazy
-    protected JpaUtil jpaUtil;
-
-    @Before
-    public void setup() {
-        cacheManager.getCache("users").clear();
-        if (isJpaBasedRealisation()) {
-            jpaUtil.clear2ndLevelHibernateCache();
-        }
-    }
-
     @Test
     public void create() {
         User created = service.create(getNew());
         int newId = created.id();
         User newUser = getNew();
+        newUser.setId(newId);
+        USER_MATCHER.assertMatch(created, newUser);
+        USER_MATCHER.assertMatch(service.get(newId), newUser);
+    }
+
+    @Test
+    public void create2r() {
+        User created = service.create(getNew2roles());
+        int newId = created.id();
+        User newUser = getNew2roles();
         newUser.setId(newId);
         USER_MATCHER.assertMatch(created, newUser);
         USER_MATCHER.assertMatch(service.get(newId), newUser);
@@ -69,8 +59,8 @@ public abstract class AbstractUserServiceTest extends AbstractServiceTest {
 
     @Test
     public void get() {
-        User user = service.get(USER_ID);
-        USER_MATCHER.assertMatch(user, UserTestData.user);
+        User user = service.get(ADMIN_ID);
+        USER_MATCHER.assertMatch(user, admin);
     }
 
     @Test
@@ -89,6 +79,13 @@ public abstract class AbstractUserServiceTest extends AbstractServiceTest {
         User updated = getUpdated();
         service.update(updated);
         USER_MATCHER.assertMatch(service.get(USER_ID), getUpdated());
+    }
+
+    @Test
+    public void update2r() {
+        User updated = getUpdated2roles();
+        service.update(updated);
+        USER_MATCHER.assertMatch(service.get(ADMIN_ID), getUpdated2roles());
     }
 
     @Test
