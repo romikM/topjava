@@ -31,7 +31,7 @@ public abstract class AbstractUserServiceTest extends AbstractServiceTest {
     }
 
     @Test
-    public void create2r() {
+    public void createWith2roles() {
         User created = service.create(getNew2roles());
         int newId = created.id();
         User newUser = getNew2roles();
@@ -75,6 +75,11 @@ public abstract class AbstractUserServiceTest extends AbstractServiceTest {
     }
 
     @Test
+    public void getByNotExistingEmail() {
+        assertThrows(NotFoundException.class, () -> service.getByEmail(NOT_EXISTING_EMAIL));
+    }
+
+    @Test
     public void update() {
         User updated = getUpdated();
         service.update(updated);
@@ -82,7 +87,7 @@ public abstract class AbstractUserServiceTest extends AbstractServiceTest {
     }
 
     @Test
-    public void update2r() {
+    public void updateWith2roles() {
         User updated = getUpdated2roles();
         service.update(updated);
         USER_MATCHER.assertMatch(service.get(ADMIN_ID), getUpdated2roles());

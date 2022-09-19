@@ -72,13 +72,15 @@ public class JdbcUserRepository implements UserRepository {
     @Override
     public User get(int id) {
         List<User> users = jdbcTemplate.query("SELECT * FROM users WHERE id=?", ROW_MAPPER, id);
-        return Objects.isNull(DataAccessUtils.singleResult(users)) ? null : setRoles(DataAccessUtils.singleResult(users));
+        User user = DataAccessUtils.singleResult(users);
+        return user == null ? null : setRoles(user);
     }
 
     @Override
     public User getByEmail(String email) {
         List<User> users = jdbcTemplate.query("SELECT * FROM users WHERE email=?", ROW_MAPPER, email);
-        return Objects.isNull(DataAccessUtils.singleResult(users)) ? null : setRoles(DataAccessUtils.singleResult(users));
+        User user = DataAccessUtils.singleResult(users);
+        return user == null ? null : setRoles(user);
     }
 
     private void insertRoles(User user) {
