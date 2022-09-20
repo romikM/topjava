@@ -15,7 +15,6 @@ public class UserTestData {
     public static final int ADMIN_ID = START_SEQ + 1;
     public static final int GUEST_ID = START_SEQ + 2;
     public static final int NOT_FOUND = 10;
-
     public static final String NOT_EXISTING_EMAIL = "definitly@unknown.domain.zz";
 
     public static final User user = new User(USER_ID, "User", "user@yandex.ru", "password", Role.USER);
@@ -28,6 +27,10 @@ public class UserTestData {
 
     public static User getNew2roles() {
         return new User(null, "New2r", "new2r@gmail.com", "newPass", Role.ADMIN, Role.USER);
+    }
+
+    public static User getNewNoRoles() {
+        return new User(null, "New0r", "new0r@gmail.com", "newPass");
     }
 
     public static User getUpdated() {

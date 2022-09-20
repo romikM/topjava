@@ -8,7 +8,7 @@
 <jsp:include page="fragments/headTag.jsp"/>
 <body>
 <jsp:include page="fragments/bodyHeader.jsp"/>
-<br />
+<br/>
 <section>
     <h3><spring:message code="meal.title"/></h3>
     <form method="get" action="meals/filter">
@@ -46,7 +46,8 @@
         <c:forEach items="${requestScope.meals}" var="meal">
             <jsp:useBean id="meal" type="ru.javawebinar.topjava.to.MealTo"/>
             <tr data-meal-excess="${meal.excess}">
-                <td><%=DateTimeUtil.toString(meal.getDateTime())%></td>
+                <td><%=DateTimeUtil.toString(meal.getDateTime())%>
+                </td>
                 <td>${meal.description}</td>
                 <td>${meal.calories}</td>
                 <td><a href="meals/update?id=${meal.id}"><spring:message code="common.update"/></a></td>
