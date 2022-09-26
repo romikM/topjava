@@ -4,13 +4,16 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.to.MealTo;
 
 import java.net.URI;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 @RestController
@@ -56,8 +59,10 @@ public class MealRestController extends AbstractMealController {
 
     @GetMapping("/between")
     public List<MealTo> getBetween(
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dateTimeFrom,
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dateTimeTo) {
-        return super.getBetween(dateTimeFrom.toLocalDate(), dateTimeFrom.toLocalTime(), dateTimeTo.toLocalDate(), dateTimeTo.toLocalTime());
+            @RequestParam @Nullable LocalDate dateFrom,
+            @RequestParam @Nullable LocalTime timeFrom,
+            @RequestParam @Nullable LocalDate dateTo,
+            @RequestParam @Nullable LocalTime timeTo) {
+        return super.getBetween(dateFrom, timeFrom, dateTo, timeTo);
     }
 }
