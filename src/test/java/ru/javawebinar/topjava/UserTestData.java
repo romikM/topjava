@@ -5,11 +5,19 @@ import ru.javawebinar.topjava.model.User;
 
 import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static ru.javawebinar.topjava.MealTestData.*;
 import static ru.javawebinar.topjava.model.AbstractBaseEntity.START_SEQ;
 
 public class UserTestData {
     public static final MatcherFactory.Matcher<User> USER_MATCHER = MatcherFactory.usingIgnoringFieldsComparator(User.class, "registered", "meals");
+
+    public static final MatcherFactory.Matcher<User> USER_WITH_MEALS_MATCHER = MatcherFactory.usingAssertions(User.class,
+           (act, exp) -> assertThat(act).usingRecursiveComparison().ignoringFields("registered", "meals.user").isEqualTo(exp),
+           (act, exp) -> { throw new UnsupportedOperationException(); }
+    );
 
     public static final int USER_ID = START_SEQ;
     public static final int ADMIN_ID = START_SEQ + 1;
@@ -22,6 +30,11 @@ public class UserTestData {
 
     public static User getNew() {
         return new User(null, "New", "new@gmail.com", "newPass", 1555, false, new Date(), Collections.singleton(Role.USER));
+    }
+
+    static {
+        user.setMeals(meals);
+        admin.setMeals(List.of(adminMeal2, adminMeal1));
     }
 
     public static User getUpdated() {
