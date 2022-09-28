@@ -15,8 +15,10 @@ public class UserTestData {
     public static final MatcherFactory.Matcher<User> USER_MATCHER = MatcherFactory.usingIgnoringFieldsComparator(User.class, "registered", "meals");
 
     public static final MatcherFactory.Matcher<User> USER_WITH_MEALS_MATCHER = MatcherFactory.usingAssertions(User.class,
-           (act, exp) -> assertThat(act).usingRecursiveComparison().ignoringFields("registered", "meals.user").isEqualTo(exp),
-           (act, exp) -> { throw new UnsupportedOperationException(); }
+            (act, exp) -> assertThat(act).usingRecursiveComparison().ignoringFields("registered", "meals.user").isEqualTo(exp),
+            (act, exp) -> {
+                throw new UnsupportedOperationException();
+            }
     );
 
     public static final int USER_ID = START_SEQ;

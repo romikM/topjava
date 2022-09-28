@@ -18,8 +18,8 @@ public class DateTimeFormatterUtil {
         }
 
         @Override
-        public String print(LocalDate lt, Locale locale) {
-            return lt.format(DateTimeFormatter.ISO_LOCAL_DATE);
+        public String print(LocalDate ld, Locale locale) {
+            return ld.format(DateTimeFormatter.ISO_LOCAL_DATE);
         }
     }
 
