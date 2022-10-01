@@ -1,3 +1,11 @@
+html {
+    position: relative;
+    min-height: 100%;
+}
+body {
+    margin-bottom: 60px !important; /* Margin bottom by footer height */
+}
+
 tr[data-meal-excess="false"] {
     color: green;
 }
@@ -14,14 +22,10 @@ tr[data-user-status=false] {
     cursor: pointer;
 }
 
-/*https://getbootstrap.com/docs/4.0/examples/sticky-footer/sticky-footer.css*/
-html {
-    position: relative;
-    min-height: 100%;
+input.extra-field {
+    display: none;
 }
-body {
-    margin-bottom: 60px !important; /* Margin bottom by footer height */
-}
+
 .footer {
     position: absolute;
     bottom: 0;

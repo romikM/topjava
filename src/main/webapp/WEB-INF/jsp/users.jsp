@@ -54,7 +54,7 @@
             </div>
             <div class="modal-body">
                 <form id="detailsForm">
-                    <input type="hidden" id="id" name="id">
+                    <input type="text" class="extra-field" value="" id="id" name="id" />
 
                     <div class="form-group">
                         <label for="name" class="col-form-label"><spring:message code="user.name"/></label>
