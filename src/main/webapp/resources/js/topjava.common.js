@@ -73,3 +73,13 @@ function failNoty(jqXHR) {
     });
     failedNote.show()
 }
+
+function warningNoty(jqXHR) {
+    closeNoty();
+    warningNote = new Noty({
+        text: "<span class='fa fa-lg fa-exclamation-circle'></span> &nbsp;Error status: " + jqXHR.status,
+        type: "warning",
+        layout: "bottomRight"
+    });
+    warningNote.show()
+}

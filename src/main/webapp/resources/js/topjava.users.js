@@ -19,7 +19,7 @@ function enableUser(chkbox, id) {
         successNoty(enabled ? "Enabled" : "Disabled");
     }).fail(function (){
         $(chkbox).prop("checked", !enabled);
-        successNoty("Something wrong, try again later.");
+        warningNoty("Something wrong, try again later.");
     });
 }
 
