@@ -17,15 +17,15 @@
             <div class="card-body pb-0">
                 <form id="filter">
                     <div class="row">
-                        <div class="col-3">
+                        <div class="col-4">
                             <label for="startDate"><spring:message code="meal.startDate"/></label>
                             <input class="form-control" name="startDate" id="startDate">
                         </div>
-                        <div class="col-3">
+                        <div class="col-4">
                             <label for="endDate"><spring:message code="meal.endDate"/></label>
                             <input class="form-control" name="endDate" id="endDate">
                         </div>
-                        <div class="offset-2 col-2">
+                        <div class="col-2">
                             <label for="startTime"><spring:message code="meal.startTime"/></label>
                             <input class="form-control" name="startTime" id="startTime">
                         </div>
@@ -79,7 +79,7 @@
 
                     <div class="form-group">
                         <label for="dateTime" class="col-form-label"><spring:message code="meal.dateTime"/></label>
-                        <input class="form-control" id="dateTime" name="dateTime" placeholder="<spring:message code="meal.dateTime"/>">
+                        <input class="form-control" id="dateTime" name="dateTime" value="<spring:message code="meal.dateTime"/>">
                     </div>
 
                     <div class="form-group">
