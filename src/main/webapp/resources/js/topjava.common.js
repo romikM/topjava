@@ -23,6 +23,10 @@ function makeEditable(options) {
     $.ajaxSetup({cache: false});
 }
 
+function dateTimeTransform(dt) {
+    return dt.replace('T', ' ').slice(0, 16);
+}
+
 function add() {
     $("#modalTitle").html(i18n["addTitle"]);
     form.find(":input").val("");
@@ -34,13 +38,10 @@ function updateRow(id) {
     $("#modalTitle").html(i18n["editTitle"]);
     $.get(ctx.ajaxUrl + id, function (data) {
         $.each(data, function (key, value) {
-            if(key=='dateTime') {
-                form.find("input[name='" + key + "']").val(value.replace('T', ' ').slice(0, 16));
-            } else {
-                form.find("input[name='" + key + "']").val(value);
-            }
+            form.find("input[name='" + key + "']").val(
+                key === 'dateTime' ? dateTimeTransform(value) : value
+            );
         });
-        $('input#dateTime').val().replace('T', ' ').slice(0, 16);
         $('#editRow').modal();
     });
 }

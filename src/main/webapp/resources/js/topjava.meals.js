@@ -71,7 +71,7 @@ $(function () {
                 "data": "dateTime",
                 "render": function (date, type, row) {
                     if (type === 'display') {
-                        return date.replace('T', ' ').slice(0, 16);
+                        return dateTimeTransform(date);
                     }
                     return date;
                 }
