@@ -78,7 +78,7 @@
 </div>
 <jsp:include page="fragments/footer.jsp"/>
 <jsp:include page="fragments/i18n.jsp">
-    <jsp:param name="pageType" value="users"/>
+    <jsp:param name="pageType" value="user"/>
 </jsp:include>
 </body>
 </html>

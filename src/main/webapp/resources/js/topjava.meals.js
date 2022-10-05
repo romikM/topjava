@@ -18,42 +18,69 @@ function clearFilter() {
 }
 
 $(function () {
+
+    $('#startDate').datetimepicker({
+        timepicker: false,
+        format: 'Y-m-d',
+        formatDate: 'Y-m-d'
+    });
+
+    $('#endDate').datetimepicker({
+        timepicker: false,
+        format: 'Y-m-d',
+        formatDate: 'Y-m-d'
+    });
+
+    $('#startTime').datetimepicker({
+        datepicker: false,
+        format: 'H:i'
+    });
+
+    $('#endTime').datetimepicker({
+        datepicker: false,
+        format: 'H:i'
+    });
+
+    $('#dateTime').datetimepicker({
+        format: 'Y-m-d H:i'
+    });
+
     makeEditable({
-            "columns": [
-                {
-                    "data": "dateTime",
-                    "render": function (date, type, row) {
-                        if (type === 'display') {
-                            return date.replace('T', ' ').slice(0, 16);
-                        }
-                        return date;
+        "columns": [
+            {
+                "data": "dateTime",
+                "render": function (date, type, row) {
+                    if (type === 'display') {
+                        return date.replace('T', ' ').slice(0, 16);
                     }
-                },
-                {
-                    "data": "description"
-                },
-                {
-                    "data": "calories"
-                },
-                {
-                    "orderable": false,
-                    "defaultContent": "",
-                    "render": renderEditBtn
-                },
-                {
-                    "orderable": false,
-                    "defaultContent": "",
-                    "render": renderDeleteBtn
+                    return date;
                 }
-            ],
-            "order": [
-                [
-                    0,
-                    "desc"
-                ]
-            ],
-            "createdRow": function (row, data, dataIndex) {
-                $(row).attr("data-meal-excess", data.excess);
+            },
+            {
+                "data": "description"
+            },
+            {
+                "data": "calories"
+            },
+            {
+                "orderable": false,
+                "defaultContent": "",
+                "render": renderEditBtn
+            },
+            {
+                "orderable": false,
+                "defaultContent": "",
+                "render": renderDeleteBtn
             }
-        });
+        ],
+        "order": [
+            [
+                0,
+                "desc"
+            ]
+        ],
+        "createdRow": function (row, data, dataIndex) {
+            $(row).attr("data-meal-excess", data.excess);
+        }
+    });
 });
